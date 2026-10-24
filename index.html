@@ -5,46 +5,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TaskEarn Nigeria</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f1f5f9;margin:0;color:#172033}
-header{background:#087f5b;color:white;padding:22px;text-align:center}
-main{max-width:500px;margin:25px auto;padding:15px}
-.card{background:white;padding:22px;margin:15px 0;border-radius:14px;box-shadow:0 2px 8px #ddd}
-button{background:#087f5b;color:white;border:0;padding:13px;border-radius:8px;width:100%;font-size:16px}
-.task{border-bottom:1px solid #ddd;padding:15px 0}
-small{color:#667085}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f2f5f9;color:#222}
+header{background:#087f5b;color:white;padding:25px 18px}
+header h1{margin:0;font-size:26px}
+header p{margin-bottom:0}
+main{max-width:600px;margin:auto;padding:16px}
+.card{background:white;padding:20px;margin:15px 0;border-radius:14px;box-shadow:0 2px 8px #ddd}
+.balance{background:#087f5b;color:white}
+.amount{font-size:32px;font-weight:bold;margin:12px 0}
+button{background:#087f5b;color:white;border:0;border-radius:8px;padding:12px 16px;font-size:15px;cursor:pointer}
+.task{border:1px solid #ddd;border-radius:10px;padding:15px;margin:12px 0}
+.reward{color:#087f5b;font-weight:bold}
+small{color:#666}
+footer{text-align:center;padding:20px;color:#666}
 </style>
 </head>
 <body>
 <header>
 <h1>TaskEarn Nigeria 🇳🇬</h1>
-<p>Complete tasks and track your progress</p>
+<p>Complete tasks and earn rewards</p>
 </header>
+
 <main>
-<div class="card">
-<h2>Welcome!</h2>
-<p>Your task dashboard</p>
-<h3>₦0.00</h3>
-<small>Demo balance — no real money available yet</small>
+<div class="card balance">
+<h3>Your Points Balance</h3>
+<div class="amount"><span id="points">0</span> points</div>
+<p>Demo dashboard balance</p>
 </div>
+
 <div class="card">
-<h2>Available Tasks</h2>
+<h2>📋 Available Tasks</h2>
+
 <div class="task">
-<strong>Task 1: Visit a website</strong>
-<p>Explore a website and learn something new.</p>
-<button onclick="alert('Demo only. No money will be credited.')">View Task</button>
+<h3>Task 1: Read a learning tip</h3>
+<p>Read the tip and tap complete.</p>
+<p class="reward">Reward: 10 demo points</p>
+<button onclick="completeTask('task1',10)">Complete Task</button>
 </div>
+
 <div class="task">
-<strong>Task 2: Read an article</strong>
-<p>Read an article and answer a question.</p>
-<button onclick="alert('Demo only. No money will be credited.')">Start Task</button>
+<h3>Task 2: Daily learning activity</h3>
+<p>Try a short learning activity.</p>
+<p class="reward">Reward: 15 demo points</p>
+<button onclick="completeTask('task2',15)">Complete Task</button>
+</div>
+
+<div class="task">
+<h3>Task 3: General knowledge</h3>
+<p>Explore a new educational topic.</p>
+<p class="reward">Reward: 20 demo points</p>
+<button onclick="completeTask('task3',20)">Complete Task</button>
 </div>
 </div>
+
 <div class="card">
-<h2>Withdrawals</h2>
-<p>Withdrawal requests are not yet connected.</p>
-<button onclick="alert('Withdrawal service is not available yet.')">Request Withdrawal</button>
+<h2>💳 Withdrawals</h2>
+<p>Your demo points are not real money and cannot be withdrawn.</p>
+<p>Payment options planned: OPay, PalmPay and Nigerian bank accounts.</p>
+<button onclick="alert('Withdrawal is not available in this demo. Real payments require a secure backend.')">Withdrawal Information</button>
 </div>
-<footer><small>TaskEarn Nigeria by Fauznoone</small></footer>
+
+<div class="card">
+<h2>ℹ️ About TaskEarn</h2>
+<p>TaskEarn Nigeria by Fauznoone</p>
+<p>This is a demonstration website. Tasks and points are for testing only.</p>
+</div>
 </main>
+
+<footer>© 2026 TaskEarn Nigeria</footer>
+
+<script>
+let points = Number(localStorage.getItem('taskearn_points') || 0);
+document.getElementById('points').textContent = points;
+
+function completeTask(id,reward){
+  if(localStorage.getItem('done_'+id)){
+    alert('You have already completed this demo task.');
+    return;
+  }
+  points += reward;
+  localStorage.setItem('taskearn_points',points);
+  localStorage.setItem('done_'+id,'yes');
+  document.getElementById('points').textContent=points;
+  alert('Demo task completed! You earned '+reward+' points.');
+}
+</script>
 </body>
 </html>
