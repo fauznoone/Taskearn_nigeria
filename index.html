@@ -1,83 +1,65 @@
-create extension if not exists pgcrypto;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskEarn Nigeria</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      text-align: center;
+      margin: 0;
+    }
+    header {
+      background: #087b42;
+      color: white;
+      padding: 25px 10px;
+    }
+    .box {
+      background: white;
+      margin: 25px auto;
+      padding: 25px;
+      max-width: 400px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px #ccc;
+    }
+    button {
+      background: #087b42;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      border-radius: 6px;
+      font-size: 16px;
+      margin: 8px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>TaskEarn Nigeria</h1>
+    <p>Complete tasks and earn rewards</p>
+  </header>
 
-create table public.profiles (
-    id uuid primary key references auth.users(id) on delete cascade,
-    username text unique not null,
-    created_at timestamptz default now()
-);
+  <div class="box">
+    <h2>Welcome!</h2>
+    <p>Create an account to get started.</p>
+    <button onclick="alert('Account registration will be available when the secure account system is connected.')">Register</button>
+    <button onclick="alert('Login will be available when the secure account system is connected.')">Login</button>
+  </div>
 
-create table public.tasks (
-    id uuid primary key default gen_random_uuid(),
-    title text not null,
-    description text,
-    reward_kobo integer not null default 0
-        check (reward_kobo >= 0),
-    active boolean not null default false
-);
+  <div class="box">
+    <h2>Available Tasks</h2>
+    <p>Tasks and verified rewards will appear here.</p>
+  </div>
 
-create table public.task_submissions (
-    id uuid primary key default gen_random_uuid(),
-    user_id uuid not null references auth.users(id),
-    task_id uuid not null references public.tasks(id),
-    status text not null default 'pending'
-        check (status in ('pending','approved','rejected')),
-    submitted_at timestamptz default now(),
-    unique(user_id, task_id)
-);
+  <div class="box">
+    <h2>Withdrawals</h2>
+    <p>Secure payment options will be added after payment integration.</p>
+  </div>
 
-create table public.withdrawal_requests (
-    id uuid primary key default gen_random_uuid(),
-    user_id uuid not null references auth.users(id),
-    amount_kobo integer not null check (amount_kobo > 0),
-    payment_method text not null
-        check (payment_method in ('bank_transfer','opay','palmpay')),
-    status text not null default 'pending'
-        check (status in ('pending','approved','rejected','paid')),
-    created_at timestamptz default now()
-);
-
-alter table public.profiles enable row level security;
-alter table public.tasks enable row level security;
-alter table public.task_submissions enable row level security;
-alter table public.withdrawal_requests enable row level security;
-
-create policy "Users view their own profile"
-on public.profiles for select
-to authenticated
-using (id = auth.uid());
-
-create policy "Users create their own profile"
-on public.profiles for insert
-to authenticated
-with check (id = auth.uid());
-
-create policy "Users view active tasks"
-on public.tasks for select
-to authenticated
-using (active = true);
-
-create policy "Users view their submissions"
-on public.task_submissions for select
-to authenticated
-using (user_id = auth.uid());
-
-create policy "Users submit tasks"
-on public.task_submissions for insert
-to authenticated
-with check (
-    user_id = auth.uid()
-    and status = 'pending'
-);
-
-create policy "Users view their withdrawals"
-on public.withdrawal_requests for select
-to authenticated
-using (user_id = auth.uid());
-
-create policy "Users request withdrawals"
-on public.withdrawal_requests for insert
-to authenticated
-with check (
-    user_id = auth.uid()
-    and status = 'pending'
-);
+  <footer>
+    <p>© 2026 TaskEarn Nigeria</p>
+  </footer>
+</body>
+</html>
